@@ -1,62 +1,31 @@
 import './style.css'
+import getWeather from './weather'
+import owIcon from './assets/openweather-logo.png'
+import { add, format } from 'date-fns'
 
-const dom = (function () {
-  const body = document.querySelector('body')
-  const searchInput = document.querySelector('#search-panel > input')
-  const searchBtn = document.querySelector('#search-panel > button')
-
-  return { body, searchInput, searchBtn }
-})()
-
-const getCoords = async function (place) {
-  try {
-    let geoResponse = await fetch(
-      `http://api.openweathermap.org/geo/1.0/direct?q={${place}}&limit=1&appid=4c25d4f0de62c8a1709a0fbc0aeb4f95`,
-      { mode: 'cors' }
-    )
-    let coords = await geoResponse.json()
-    // console.log(coords)
-    return coords
-  } catch (error) {
-    console.log(error)
-    return error
-  }
+const dom = {
+  page: document.querySelector('#page-wrap'),
+  searchInput: document.querySelector('#search-panel > input'),
+  searchBtn: document.querySelector('#search-panel > button'),
+  openweather: document.querySelector('footer > div img'),
+  locationName: document.querySelector('#location-name'),
+  temp: document.querySelector('#temp'),
+  sky: document.querySelector('#sky'),
+  humidity: document.querySelector('#humidity'),
+  time: document.querySelector('#time'),
+  wind: document.querySelector('#wind'),
 }
 
-const request = async function (coords) {
-  try {
-    let weatherResponse = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${coords[0].lat}&lon=${coords[0].lon}&units=metric&appid=4c25d4f0de62c8a1709a0fbc0aeb4f95`,
-      { mode: 'cors' }
-    )
-    let weatherData = await weatherResponse.json()
-    weatherData.name = coords[0].name
-    // console.log(weatherData)
-    return weatherData
-  } catch (error) {
-    if (coords.length === 0) {
-      return Promise.reject('Could not find location')
-    } else {
-      console.log(error)
-      return error
-    }
-  }
-}
-
-const getWeather = async function (place) {
-  const coords = await getCoords(place)
-  const rawData = await request(coords)
-  console.log(rawData)
-  return rawData
-}
-getWeather('london')
+getWeather('london').then((res) => render(res))
+dom.openweather.src = owIcon
 
 dom.searchBtn.addEventListener('click', () => {
   let place = dom.searchInput.value.split(' ').join('')
   if (place) {
     getWeather(place).then(
-      () => {
+      (data) => {
         dom.searchInput.value = ''
+        render(data)
       },
       (err) => {
         console.log(err)
@@ -71,8 +40,9 @@ dom.searchInput.addEventListener('keydown', (e) => {
     let place = dom.searchInput.value.split(' ').join('')
     if (place) {
       getWeather(place).then(
-        () => {
+        (data) => {
           dom.searchInput.value = ''
+          render(data)
         },
         (err) => {
           console.log(err)
@@ -83,3 +53,20 @@ dom.searchInput.addEventListener('keydown', (e) => {
     }
   }
 })
+
+const render = function (data) {
+  const currentDate = new Date()
+  dom.time.textContent = format(
+    add(currentDate, {
+      minutes: currentDate.getTimezoneOffset() + data.timezone / 60,
+    }),
+    'E, LLLL do, haaa'
+  )
+  dom.locationName.textContent = data.name
+  dom.temp.textContent = `${data.main.temp} °C`
+  dom.sky.textContent =
+    data.weather[0].description[0].toUpperCase() +
+    data.weather[0].description.slice(1)
+  dom.humidity.textContent = `Humidity: ${data.main.humidity}%`
+  dom.wind.textContent = `Wind: ${data.wind.speed}m/s`
+}

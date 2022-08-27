@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  font-family: monospace;
+}
+#page-wrap {
+  width: 100vw;
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5%;
+  background-color: #999;
+}
+footer {
+  width: 100vw;
+  height: 5vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 5%;
+  background-color: #222;
+}
+footer > div > a {
+  display: flex;
+  align-items: center;
+}
+footer > div img {
+  width: 60px;
+  height: auto;
+}
+main {
+  border: 1px solid #000;
+  width: 400px;
+  height: 600px;
+}
+#location-name {
+  font-size: 2rem;
+}
