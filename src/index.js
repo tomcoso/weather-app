@@ -30,17 +30,56 @@ const request = async function (coords) {
       { mode: 'cors' }
     )
     let weatherData = await weatherResponse.json()
+    weatherData.name = coords[0].name
     // console.log(weatherData)
     return weatherData
   } catch (error) {
-    console.log(error)
-    return error
+    if (coords.length === 0) {
+      return Promise.reject('Could not find location')
+    } else {
+      console.log(error)
+      return error
+    }
   }
 }
 
 const getWeather = async function (place) {
-  const coords = await getCoords('valencia')
+  const coords = await getCoords(place)
   const rawData = await request(coords)
   console.log(rawData)
+  return rawData
 }
 getWeather('london')
+
+dom.searchBtn.addEventListener('click', () => {
+  let place = dom.searchInput.value.split(' ').join('')
+  if (place) {
+    getWeather(place).then(
+      () => {
+        dom.searchInput.value = ''
+      },
+      (err) => {
+        console.log(err)
+      }
+    )
+  } else {
+    console.log('Write a city')
+  }
+})
+dom.searchInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    let place = dom.searchInput.value.split(' ').join('')
+    if (place) {
+      getWeather(place).then(
+        () => {
+          dom.searchInput.value = ''
+        },
+        (err) => {
+          console.log(err)
+        }
+      )
+    } else {
+      console.log('Write a city')
+    }
+  }
+})
