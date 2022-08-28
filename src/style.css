@@ -25,6 +25,15 @@ footer {
   padding: 0px 5%;
   background-color: #222;
 }
+#search-panel {
+  position: relative;
+}
+#error-msg {
+  position: absolute;
+  opacity: 0;
+  top: -150%;
+  left: 0;
+}
 footer > div > a {
   display: flex;
   align-items: center;

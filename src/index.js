@@ -14,29 +14,16 @@ const dom = {
   humidity: document.querySelector('#humidity'),
   time: document.querySelector('#time'),
   wind: document.querySelector('#wind'),
+  errormsg: document.querySelector('#error-msg'),
+  visibility: document.querySelector('#visibility'),
+  feelsLike: document.querySelector('#feels-like'),
 }
 
 getWeather('london').then((res) => render(res))
 dom.openweather.src = owIcon
 
-dom.searchBtn.addEventListener('click', () => {
-  let place = dom.searchInput.value.split(' ').join('')
-  if (place) {
-    getWeather(place).then(
-      (data) => {
-        dom.searchInput.value = ''
-        render(data)
-      },
-      (err) => {
-        console.log(err)
-      }
-    )
-  } else {
-    console.log('Write a city')
-  }
-})
-dom.searchInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
+const search = function (e) {
+  if (e.key === 'Enter' || e.type === 'click') {
     let place = dom.searchInput.value.split(' ').join('')
     if (place) {
       getWeather(place).then(
@@ -46,13 +33,29 @@ dom.searchInput.addEventListener('keydown', (e) => {
         },
         (err) => {
           console.log(err)
+          dom.errormsg.animate(
+            [
+              { opacity: 0 },
+              { opacity: 1, offset: 0.2 },
+              { opacity: 1, offset: 1 },
+            ],
+            {
+              direction: 'alternate',
+              iterations: 2,
+              easing: 'ease-in-out',
+              duration: 1000,
+            }
+          )
         }
       )
     } else {
       console.log('Write a city')
     }
   }
-})
+}
+
+dom.searchBtn.addEventListener('click', search)
+dom.searchInput.addEventListener('keydown', search)
 
 const render = function (data) {
   const currentDate = new Date()
@@ -62,11 +65,15 @@ const render = function (data) {
     }),
     'E, LLLL do, haaa'
   )
-  dom.locationName.textContent = data.name
+  dom.locationName.textContent = `${data.name}, ${data.sys.country}`
   dom.temp.textContent = `${data.main.temp} °C`
   dom.sky.textContent =
     data.weather[0].description[0].toUpperCase() +
     data.weather[0].description.slice(1)
-  dom.humidity.textContent = `Humidity: ${data.main.humidity}%`
-  dom.wind.textContent = `Wind: ${data.wind.speed}m/s`
+  dom.humidity.textContent = `${data.main.humidity}% humidity`
+  dom.wind.textContent = `${(data.wind.speed * 3.6).toFixed(1)}km/h`
+  dom.visibility.textContent = `${(data.visibility / 1000).toFixed(
+    1
+  )}km visibility`
+  dom.feelsLike.textContent = `Feels like ${data.main.feels_like} °C`
 }
