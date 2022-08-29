@@ -1,7 +1,7 @@
 const getCoords = async function (place) {
   try {
     let geoResponse = await fetch(
-      `http://api.openweathermap.org/geo/1.0/direct?q={${place}}&limit=1&appid=4c25d4f0de62c8a1709a0fbc0aeb4f95`,
+      `https://api.openweathermap.org/geo/1.0/direct?q={${place}}&limit=1&appid=4c25d4f0de62c8a1709a0fbc0aeb4f95`,
       { mode: 'cors' }
     )
     let coords = await geoResponse.json()
