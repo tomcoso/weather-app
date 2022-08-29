@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;700&display=swap" rel="stylesheet">
     <title>Weather App</title>
 <script defer src="main.js"></script></head>
 <body>
@@ -15,9 +18,8 @@
                     
                     <p id="time"></p>
                     <p id="location-name"></p>
-                    <p id="sky"></p>
                     <p id="temp"></p>
-                    <p id="feels-like"></p>
+                    <p id="description"></p>
                 </div>
                 <div class="secondary-panel">
                     <p id="humidity"></p>
@@ -30,12 +32,16 @@
     </div>
     <footer>
         <div id="search-panel">
+            
+            <div id="search-pop"><img src="" alt="search"></div>
+            <div id="search-input">
+                <input type="text">
+                <button type="submit">Search</button>
+            </div>
             <span id="error-msg">Could not find location</span>
-            <input type="text">
-            <button type="submit">Search</button>
         </div>
-        <a href="#">Git</a>
-        <div><a href="https://openweathermap.org/"><img src="" alt="open weather"></a></div>
+        <a href="https://github.com/tomcoso" target="_blank"><img src="" alt="Git"></a>
+        <div><a href="https://openweathermap.org/" target="_blank"><img src="" alt="open weather"></a></div>
     </footer>
 </body>
 </html>
