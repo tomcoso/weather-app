@@ -2,6 +2,7 @@ import './style.css'
 import getWeather from './weather'
 import owIcon from './assets/openweather-logo.png'
 import { add, format } from 'date-fns'
+import pickBg from './background'
 
 const dom = {
   page: document.querySelector('#page-wrap'),
@@ -59,6 +60,8 @@ dom.searchInput.addEventListener('keydown', search)
 
 const render = function (data) {
   const currentDate = new Date()
+  dom.page.removeAttribute('style')
+  dom.page.setAttribute('style', `background-image: url(${pickBg()})`)
   dom.time.textContent = format(
     add(currentDate, {
       minutes: currentDate.getTimezoneOffset() + data.timezone / 60,
