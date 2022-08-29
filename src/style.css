@@ -30,13 +30,14 @@
 
 footer {
   width: 100vw;
-  height: 5vh;
+  height: 6vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
   padding: 0px 5%;
   background-color: #222;
+  margin-bottom: -1px;
 }
 #search-panel {
   position: relative;
@@ -113,9 +114,13 @@ footer > a {
   align-items: center;
   margin-left: auto;
 }
+
+body {
+  background-color: #222;
+}
 #page-wrap {
   width: 100vw;
-  height: 95vh;
+  height: 94vh;
   margin-bottom: -1px; /*fixes white line on top of footer */
   display: flex;
   flex-direction: column;
