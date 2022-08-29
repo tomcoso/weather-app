@@ -1,12 +1,22 @@
 import forest from './assets/forest.jpg'
 import apartments from './assets/apartments.jpg'
-import car from './assets/car.jpg'
+import skyline from './assets/skyline.jpg'
 import city from './assets/city.jpg'
 import coffee from './assets/coffee.jpg'
 import sunset from './assets/sunset.jpg'
-import window from './assets/window.jpg'
+import newyork from './assets/newyork.jpg'
+import concrete from './assets/concrete.jpg'
 
-const backgrounds = [forest, apartments, car, city, coffee, sunset, window]
+const backgrounds = [
+  forest,
+  apartments,
+  skyline,
+  city,
+  coffee,
+  sunset,
+  newyork,
+  concrete,
+]
 
 const pickBg = function () {
   return backgrounds[Math.floor(Math.random() * backgrounds.length)]
