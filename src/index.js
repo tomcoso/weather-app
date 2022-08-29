@@ -5,6 +5,7 @@ import git from './assets/GitHub-Mark-Light-32px.png'
 import { add, format } from 'date-fns'
 import pickBg from './background'
 import searchIcon from './assets/search.svg'
+import rainIcon from './assets/rain.svg'
 
 const dom = {
   page: document.querySelector('#page-wrap'),
@@ -22,6 +23,7 @@ const dom = {
   visibility: document.querySelector('#visibility'),
   git: document.querySelector('footer > a > img'),
   searchPop: document.querySelector('#search-pop > img'),
+  pop: document.querySelector('#pop'),
 }
 
 getWeather('buenos aires').then((res) => render(res))
@@ -85,6 +87,7 @@ const render = function (data) {
   dom.visibility.textContent = `${(data.visibility / 1000).toFixed(
     1
   )}km visibility`
+  dom.pop.textContent = `${data.forecast.list[0].pop * 100}% rain chance`
 }
 
 const searchAnimation = new Animation(

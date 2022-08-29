@@ -4,7 +4,6 @@ import skyline from './assets/skyline.jpg'
 import city from './assets/city.jpg'
 import coffee from './assets/coffee.jpg'
 import sunset from './assets/sunset.jpg'
-import newyork from './assets/newyork.jpg'
 import concrete from './assets/concrete.jpg'
 
 const backgrounds = [
@@ -14,7 +13,6 @@ const backgrounds = [
   city,
   coffee,
   sunset,
-  newyork,
   concrete,
 ]
 

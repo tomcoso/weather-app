@@ -32,10 +32,25 @@ const request = async function (coords) {
     }
   }
 }
+const getForecast = async function (coords) {
+  try {
+    let forecastResponse = await fetch(
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${coords[0].lat}&lon=${coords[0].lon}&unnits=metric&appid=4c25d4f0de62c8a1709a0fbc0aeb4f95`,
+      { mode: 'cors' }
+    )
+    let forecast = await forecastResponse.json()
+    return forecast
+  } catch {
+    console.log(error)
+    return error
+  }
+}
 
 const getWeather = async function (place) {
   const coords = await getCoords(place)
   const rawData = await request(coords)
+  const forecast = await getForecast(coords)
+  rawData.forecast = forecast
   console.log(rawData)
   return rawData
 }
