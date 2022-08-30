@@ -111,7 +111,9 @@ const render = function (data) {
     data.weather[0].description.slice(1)
   }. <br> Feels like ${data.main.feels_like.toFixed(1)} ${unit}`
 
-  dom.pop.textContent = `${data.forecast.list[0].pop * 100}% Chance of rain`
+  dom.pop.textContent = `${(data.forecast.list[0].pop * 100).toFixed(
+    0
+  )}% Chance of rain`
 
   dom.humidity.textContent = `${data.main.humidity}% Humidity`
 
