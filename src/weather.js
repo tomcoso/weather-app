@@ -13,13 +13,14 @@ const getCoords = async function (place) {
   }
 }
 
-const request = async function (coords) {
+const request = async function (coords, unit) {
   try {
     let weatherResponse = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${coords[0].lat}&lon=${coords[0].lon}&units=metric&appid=4c25d4f0de62c8a1709a0fbc0aeb4f95`,
+      `https://api.openweathermap.org/data/2.5/weather?lat=${coords[0].lat}&lon=${coords[0].lon}&units=${unit}&appid=4c25d4f0de62c8a1709a0fbc0aeb4f95`,
       { mode: 'cors' }
     )
     let weatherData = await weatherResponse.json()
+    unit === 'metric' ? (weatherData.unit = '°C') : (weatherData.unit = '°F')
     weatherData.name = coords[0].name
     // console.log(weatherData)
     return weatherData
@@ -46,9 +47,9 @@ const getForecast = async function (coords) {
   }
 }
 
-const getWeather = async function (place) {
+const getWeather = async function (place, unit) {
   const coords = await getCoords(place)
-  const rawData = await request(coords)
+  const rawData = await request(coords, unit)
   const forecast = await getForecast(coords)
   rawData.forecast = forecast
   console.log(rawData)

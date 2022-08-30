@@ -31,7 +31,8 @@
 footer {
   width: 100vw;
   height: 6vh;
-  display: flex;
+  display: grid;
+  grid: 1fr / 1fr repeat(3, min-content);
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
@@ -112,7 +113,17 @@ footer > a > img:hover {
 footer > a {
   display: flex;
   align-items: center;
-  margin-left: auto;
+  z-index: 2;
+}
+#unit-select {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #f59e0b;
+  cursor: grab;
+  z-index: 2;
+}
+#unit-select:active {
+  transform: translateY(1px);
 }
 
 body {
@@ -157,4 +168,23 @@ main {
   margin-top: 0.2rem;
   font-size: 1.1rem;
   font-weight: 500;
+}
+
+.secondary-panel {
+  display: grid;
+  grid: auto-flow / min-content 1fr;
+  gap: 0.2rem;
+  font-size: 16px;
+  font-weight: 500;
+}
+svg path {
+  fill: #f59e0b;
+  scale: 0.4;
+}
+svg {
+  height: 22px;
+  width: 22px;
+}
+#min-max-temp {
+  line-height: 150%;
 }
