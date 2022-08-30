@@ -27,28 +27,12 @@ const dom = {
   minmaxtemp: document.querySelector('#min-max-temp'),
   unitSelect: document.querySelector('#unit-select'),
 }
-let currentUnit = 'metric'
-dom.unitSelect.addEventListener('click', function () {
-  if (this.textContent === '°C') {
-    currentUnit = 'imperial'
-    this.textContent = '°F'
-  } else if (this.textContent === '°F') {
-    currentUnit = 'metric'
-    this.textContent = '°C'
-  }
-  getWeatherWrap(dom.locationName.textContent, currentUnit)
-})
 
 const getWeatherWrap = function (location, unit) {
   load.play()
   getWeather(location, unit).then((res) => render(res))
   return Promise.resolve('Success!')
 }
-
-getWeatherWrap('buenos aires', currentUnit)
-dom.openweather.src = owIcon
-dom.git.src = git
-dom.searchPop.src = searchIcon
 
 const search = function (e) {
   if (e.key === 'Enter' || e.type === 'click') {
@@ -80,9 +64,6 @@ const search = function (e) {
     }
   }
 }
-
-dom.searchBtn.addEventListener('click', search)
-dom.searchInput.addEventListener('keydown', search)
 
 const render = function (data) {
   load.stop()
@@ -155,3 +136,23 @@ dom.searchPop.addEventListener('click', () => {
     searchAnimation.play()
   }
 })
+
+let currentUnit = 'metric'
+dom.unitSelect.addEventListener('click', function () {
+  if (this.textContent === '°C') {
+    currentUnit = 'imperial'
+    this.textContent = '°F'
+  } else if (this.textContent === '°F') {
+    currentUnit = 'metric'
+    this.textContent = '°C'
+  }
+  getWeatherWrap(dom.locationName.textContent, currentUnit)
+})
+
+getWeatherWrap('buenos aires', currentUnit)
+dom.openweather.src = owIcon
+dom.git.src = git
+dom.searchPop.src = searchIcon
+
+dom.searchBtn.addEventListener('click', search)
+dom.searchInput.addEventListener('keydown', search)
