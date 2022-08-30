@@ -5,6 +5,7 @@ import git from './assets/GitHub-Mark-Light-32px.png'
 import { add, format } from 'date-fns'
 import pickBg from './background'
 import searchIcon from './assets/search.svg'
+import load from './animation'
 
 const dom = {
   page: document.querySelector('#page-wrap'),
@@ -35,12 +36,16 @@ dom.unitSelect.addEventListener('click', function () {
     currentUnit = 'metric'
     this.textContent = '°C'
   }
-  getWeather(dom.locationName.textContent, currentUnit).then((res) =>
-    render(res)
-  )
+  getWeatherWrap(dom.locationName.textContent, currentUnit)
 })
 
-getWeather('buenos aires', currentUnit).then((res) => render(res))
+const getWeatherWrap = function (location, unit) {
+  load.play()
+  getWeather(location, unit).then((res) => render(res))
+  return Promise.resolve('Success!')
+}
+
+getWeatherWrap('buenos aires', currentUnit)
 dom.openweather.src = owIcon
 dom.git.src = git
 dom.searchPop.src = searchIcon
@@ -49,10 +54,9 @@ const search = function (e) {
   if (e.key === 'Enter' || e.type === 'click') {
     let place = dom.searchInput.value.split(' ').join('')
     if (place) {
-      getWeather(place, 'metric').then(
-        (data) => {
+      getWeatherWrap(place, 'metric').then(
+        (res) => {
           dom.searchInput.value = ''
-          render(data)
         },
         (err) => {
           console.log(err)
@@ -81,6 +85,7 @@ dom.searchBtn.addEventListener('click', search)
 dom.searchInput.addEventListener('keydown', search)
 
 const render = function (data) {
+  load.stop()
   const currentDate = new Date()
   const unit = data.unit
 
@@ -104,12 +109,12 @@ const render = function (data) {
 
   dom.locationName.textContent = `${data.name}, ${data.sys.country}`
 
-  dom.temp.textContent = `${data.main.temp} ${unit}`
+  dom.temp.textContent = `${data.main.temp.toFixed(1)} ${unit}`
 
   dom.description.innerHTML = `${
     data.weather[0].description[0].toUpperCase() +
     data.weather[0].description.slice(1)
-  }. <br> Feels like ${data.main.feels_like} ${unit}`
+  }. <br> Feels like ${data.main.feels_like.toFixed(1)} ${unit}`
 
   dom.pop.textContent = `${data.forecast.list[0].pop * 100}% Chance of rain`
 
@@ -121,7 +126,9 @@ const render = function (data) {
     1
   )}km Visibility`
 
-  dom.minmaxtemp.innerHTML = `Min ${data.main.temp_min} ${unit}<br>Max ${data.main.temp_max} ${unit}`
+  dom.minmaxtemp.innerHTML = `Min ${data.main.temp_min.toFixed(
+    1
+  )} ${unit}<br>Max ${data.main.temp_max.toFixed(1)} ${unit}`
 }
 
 const searchAnimation = new Animation(

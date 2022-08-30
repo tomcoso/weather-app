@@ -188,3 +188,30 @@ svg {
 #min-max-temp {
   line-height: 150%;
 }
+
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 3;
+}
+.lds-ripple {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #f59e0b;
+  opacity: 1;
+  border-radius: 50%;
+}
