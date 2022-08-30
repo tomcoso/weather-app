@@ -8,7 +8,6 @@ const getCoords = async function (place) {
     // console.log(coords)
     return coords
   } catch (error) {
-    console.log(error)
     return error
   }
 }
@@ -22,13 +21,11 @@ const request = async function (coords, unit) {
     let weatherData = await weatherResponse.json()
     unit === 'metric' ? (weatherData.unit = '°C') : (weatherData.unit = '°F')
     weatherData.name = coords[0].name
-    // console.log(weatherData)
     return weatherData
   } catch (error) {
     if (coords.length === 0) {
-      return Promise.reject('Could not find location')
+      return error
     } else {
-      console.log(error)
       return error
     }
   }
@@ -41,8 +38,7 @@ const getForecast = async function (coords) {
     )
     let forecast = await forecastResponse.json()
     return forecast
-  } catch {
-    console.log(error)
+  } catch (error) {
     return error
   }
 }
@@ -52,8 +48,11 @@ const getWeather = async function (place, unit) {
   const rawData = await request(coords, unit)
   const forecast = await getForecast(coords)
   rawData.forecast = forecast
-  console.log(rawData)
-  return rawData
+  if (rawData.main) {
+    return rawData
+  } else {
+    return Promise.reject(rawData)
+  }
 }
 
 export default getWeather

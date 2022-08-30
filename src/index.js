@@ -6,6 +6,7 @@ import { add, format } from 'date-fns'
 import pickBg from './background'
 import searchIcon from './assets/search.svg'
 import load from './animation'
+import { resolveConfig } from 'prettier'
 
 const dom = {
   page: document.querySelector('#page-wrap'),
@@ -28,37 +29,50 @@ const dom = {
   unitSelect: document.querySelector('#unit-select'),
 }
 
-const getWeatherWrap = function (location, unit) {
+const getWeatherWrap = async function (location, unit) {
   load.play()
-  getWeather(location, unit).then((res) => render(res))
-  return Promise.resolve('Success!')
+  let status
+  await getWeather(location, unit)
+    .then((res) => {
+      render(res)
+      status = true
+    })
+    .catch((err) => {
+      load.stop()
+      console.log(err)
+      dom.errormsg.animate(
+        [
+          { opacity: 0 },
+          { opacity: 1, offset: 0.1 },
+          { opacity: 1, offset: 1 },
+        ],
+        {
+          direction: 'alternate',
+          iterations: 2,
+          easing: 'ease-in-out',
+          duration: 1000,
+        }
+      )
+      status = false
+    })
+  if (status) {
+    return Promise.resolve('Success!')
+  } else {
+    return false
+  }
 }
 
 const search = function (e) {
   if (e.key === 'Enter' || e.type === 'click') {
     let place = dom.searchInput.value.split(' ').join('')
     if (place) {
-      getWeatherWrap(place, 'metric').then(
-        (res) => {
+      getWeatherWrap(place, currentUnit).then((res) => {
+        if (res) {
           dom.searchInput.value = ''
-        },
-        (err) => {
-          console.log(err)
-          dom.errormsg.animate(
-            [
-              { opacity: 0 },
-              { opacity: 1, offset: 0.1 },
-              { opacity: 1, offset: 1 },
-            ],
-            {
-              direction: 'alternate',
-              iterations: 2,
-              easing: 'ease-in-out',
-              duration: 1000,
-            }
-          )
+          searchAnimation.reverse()
         }
-      )
+      }),
+        (err) => console.log(err)
     } else {
       console.log('Write a city')
     }
